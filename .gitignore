@@ -1,0 +1,23 @@
+# --- Secrets: never commit these ---
+.env
+*.env
+.env.*
+*.key
+secrets.*
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# --- OS / editor cruft ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# NOTE: briefs/ is intentionally NOT ignored — the generated briefs are
+# committed to the repo on purpose (portfolio history + the "posts everything"
+# goal). Only credentials are kept out.

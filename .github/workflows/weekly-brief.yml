@@ -1,0 +1,44 @@
+name: Weekly Adtech Brief
+
+on:
+  schedule:
+    # Mondays at 15:00 UTC (~7-8am US Pacific, depending on daylight saving).
+    # cron is always UTC; adjust the hour if you want a different local time.
+    - cron: "0 15 * * 1"
+  workflow_dispatch: {}   # also lets you trigger a run by hand from the Actions tab
+
+permissions:
+  contents: write         # needed so the job can commit the new brief back
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Generate and email the brief
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: python run.py
+
+      - name: Commit the new brief
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add briefs/
+          git commit -m "Weekly brief $(date -u +%F)" || echo "No new brief to commit"
+          git push

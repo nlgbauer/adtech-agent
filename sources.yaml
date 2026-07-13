@@ -1,0 +1,32 @@
+# Adtech Market Intelligence Agent — source configuration
+#
+# Each source needs: name, type (rss | html), url.
+# Prefer "rss": it's clean and reliable. Use "html" only when a source has no feed.
+#
+# NOTE: these URLs are a starting guess — verify each one and swap in what you
+# actually want to track. Some (AdExchanger, Digiday) may be partly paywalled;
+# the agent degrades gracefully if a source fails, so a bad URL won't break a run.
+
+sources:
+  - name: AdExchanger
+    type: rss
+    url: https://www.adexchanger.com/feed/
+  - name: Digiday
+    type: rss
+    url: https://digiday.com/feed/
+  - name: Marketing Dive
+    type: rss
+    url: https://www.marketingdive.com/feeds/news/
+  - name: Adweek
+    type: rss
+    url: https://www.adweek.com/feed/
+  - name: Ad Age
+    type: html
+    url: https://adage.com/
+
+# Optional focus list — specific players to watch closely this cycle.
+# These are fetched IN ADDITION to the trade sources above.
+focus_list: []
+  # - name: The Trade Desk
+  #   type: html
+  #   url: https://www.thetradedesk.com/us/news
